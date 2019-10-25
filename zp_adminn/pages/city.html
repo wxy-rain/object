@@ -1,0 +1,125 @@
+<style type="text/css">
+	.child{
+		width: 800px;
+		margin: 0 auto;
+		margin-top: 20px;
+		box-sizing: border-box;
+		border: 1px solid #aaa;
+	}
+	.child_top{
+		box-sizing: border-box;
+		width: 100%;
+		height: 40%;
+		background-color: #373A3C;
+		color: #fff;
+		padding: 5px;
+		font-size: 14px;
+	}
+	.child_bottom{
+		width: 100%;
+		height: 60%;
+		padding: 5px;
+		font-size: 14px;
+		overflow: auto;
+		box-sizing: border-box;
+	}
+	.child_bottom span{
+		display: inline-block;
+		width: 100px;
+		height: 20px;
+		text-align: center;
+		margin-right: 10px;
+	}
+
+	#add{
+		display: block;
+		margin-bottom: 1rem;
+		margin-left: 88%;
+		background-color: #ff6600;
+	}
+	.add{
+		height:2.4em;
+	}
+</style>
+<div>
+	<div>
+		<button id="add" type="button" class="btn text-white">添加省份</button>
+	</div>
+	<div class="child">
+		<div class="child_top">
+			<span>北京</span>
+		</div>
+		<div class="child_bottom">
+			
+		</div>
+	</div>
+	<!-- 删除成功的提示框开始 -->
+	<div class="toast toast_del" style="position: absolute;top: 1em;right: 1em">
+	  <div class="toast-header">
+	    <i class="fa fa-bell text-success mr-5"></i>
+	    <strong class="mr-auto">success</strong>
+	    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+	      <span>&times;</span>
+	    </button>
+	  </div>
+	  <div class="toast-body"></div> 
+	</div>
+	<!-- 删除成功的提示框结束 -->
+</div>
+<script type="text/javascript">
+	var baseURL = "http://203.195.246.58:7777";
+	// var baseURL = "http://47.106.244.1:7777";
+	$(function(){
+		//提示框
+		function toast(msg){
+			$(".toast .toast-body").text(msg);
+			$(".toast").toast("show");
+			$(".toast").toast({
+				autohide:true,
+				delay:2000
+			});
+		}
+		//给添加省份绑定事件
+		$('#add').on('click',function(){
+
+		})
+		$('.child_bottom').on({click:function(){
+			$('.child_bottom a').remove()
+			$('.child_bottom').append($(`<input type="text" class="form-group add" name="submit"> <button class="form-group btn btn-primary" style="height:2em;line-height:1em" >提交</button>`))
+		}},'a')
+
+
+
+		function loadAllCity(){
+			$('.child_bottom').empty();
+			$.get(baseURL+'/City/findAll',function(res){
+				// console.log(res.data)
+				res.data.forEach(function(item){
+					$('.child_bottom').append($(`
+						<span>`+item.name+`</span>
+					`))
+				})
+				$('.child_bottom').append($(`
+						<a href="#">添加</a>
+					`))
+			})
+		}
+
+		loadAllCity(); 
+
+		$('.child_bottom').on({click:function(){
+			// alert(1)
+			var name = $('input[name=submit]').val()
+			var obj = {
+				name:name,
+				provinceId:"15"
+			}
+			$.post(baseURL+'/City/saveOrUpdate',obj,function(res){
+				toast('添加成功');
+				loadAllCity();
+			})
+		}},'button')
+
+	})
+</script>
+

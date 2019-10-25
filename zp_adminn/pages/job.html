@@ -1,0 +1,187 @@
+<style>
+	#add_user{
+		float: left;
+		margin-bottom: 1rem;
+		margin-right:2rem;
+	}
+	.modal-backdrop {
+	    z-index: -1;
+	}
+	.modal{
+		margin-top:55px; 
+	}
+</style>
+<div class="main">
+	<div class="layui-tab">
+	    <ul class="layui-tab-title">
+		    <li class="layui-this">求职列表</li>
+		</ul>
+		<div class="layui-tab-content">
+		    <div class="layui-tab-item layui-show">
+	    		<button id="add_user" type="button" class="btn btn-dark">待联系</button>
+		    	<table class="table text-center table-sm">
+		    		<thead class="thead-dark">
+		    			<tr>
+					      <th scope="col">#</th>
+					      <th scope="col">求职人</th>
+					      <th scope="col">联系方式</th>
+					      <th scope="col">求职岗位</th>
+					      <th scope="col">简历</th>
+					      <th scope="col">申请时间</th>
+					    </tr>
+		    		</thead>
+		    		<tbody class="user_tbl">
+		    		</tbody>
+		    	</table>
+			</div>
+	    </div>
+	</div>
+	<!-- 详情模态框 -->
+	<div class="modal fade" id="myModal" tabindex="-1">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <!-- <h5 class="modal-title" id="addLabel">修改商家信息</h5> -->
+	        <h5 id="realname" style="margin-right: 10px; "></h5>
+	        <a href="javascript:void(0)" style="text-decoration: none; ">
+	         <span class="fa fa-frown-o text-info"></span>
+	         <!-- <span class="fa fa-mobile-alt text-info"></span> -->
+	         手机认证
+	         </a>
+	        <button type="button" class="close" onclick="closeRecuritmentModal()">
+	         <span>&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="row" style="margin-bottom: 10px ">
+	      		<div class="col-5 text-right">
+	      			学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;历:
+	      		</div>
+	      		<div class="col"  id="education"></div>
+	      	</div>
+	      	<div class="row" style="margin-bottom: 10px ">
+	      		<div class="col-5 text-right">
+	      			性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:
+	      		</div>
+	      		<div class="col"  id="gender"></div>
+	      	</div>
+	      	<div class="row" style="margin-bottom: 10px ">
+	      		<div class="col-5 text-right">
+	      			出生日期:
+	      		</div>
+	      		<div class="col"  id="birth"></div>
+	      	</div>
+	      	<div class="row" style="margin-bottom: 10px ">
+	      		<div class="col-5 text-right">
+	      			工作经验:
+	      		</div>
+	      		<div class="col"  id="workTime"></div>
+	      	</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" onclick="closeRecuritmentModal()">取消</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- /详情莫泰框结束 -->
+	<!-- 删除成功的提示框开始 -->
+	<div class="toast toast_del" style="position: absolute;top: 1em;right: 1em">
+	  <div class="toast-header">
+	    <i class="fa fa-bell text-success mr-5"></i>
+	    <strong class="mr-auto">success</strong>
+	    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+	      <span>&times;</span>
+	    </button>
+	  </div>
+	  <div class="toast-body"></div> 
+	</div>
+	<!-- 删除成功的提示框结束 -->
+	</div>
+</div>
+<script>
+	//关闭模态框
+		function closeRecuritmentModal(){
+			$("#myModal").modal("hide");
+		}
+	$(function(){
+		// var baseURL = "http://47.106.244.1:7777";
+		var baseURL = "http://203.195.246.58:7777";
+
+		//日期转换
+		var dateParse=(dataString)=>{
+		  if(dataString){
+		    let date = new Date(dataString);
+		    let Y = date.getFullYear() + '-';
+		    let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		    let D = (date.getDate()< 10 ? '0'+date.getDate() : date.getDate())+' ';
+		    let h = (date.getHours()< 10 ? '0'+date.getHours() : date.getHours())+ ':';
+		    let m = (date.getMinutes()< 10 ? '0'+date.getMinutes() : date.getMinutes())+ ':';
+		    let s = (date.getSeconds()< 10 ? '0'+date.getSeconds() : date.getSeconds());
+		    return Y+M+D+h+m+s;
+		  }else{
+		    return '';
+		  }
+		}
+		//查询数据
+		function reloadData(){
+			var url = baseURL+'/EmploymentJobhunter/findAllWithJobhAndEmpl';
+			$.get(url,function(res){
+				$('tbody').empty();
+				res.data.forEach(function(item,index){
+					$(`<tr>
+					  	<td><input type="checkbox" value=`+item.id+`></td>
+						<td>`+item.jobhunter.realname+`</td>
+						<td>`+item.jobhunter.telephone+`</td>
+						<td>`+item.employment.job+`</td>
+						<td><a class="btn_deta" href="javascript:void(0)">
+								<span class="btn_deta">查看</span>
+							</a>
+						</td>
+						<td>`+dateParse(item.askTime)+`</td>
+					</tr>`).appendTo('tbody');
+				})
+				
+			})
+		}
+		reloadData();
+		//给查看绑定事件
+		$(".user_tbl").on("click","a",function(e){
+			e.preventDefault();
+
+			switch(this.className){
+		        //为查看按钮绑定事件
+				case "btn_deta":
+				$("#myModal").modal("show");
+				//获取数据
+
+				var id = $(this).parents("tr").children().eq(0).find("input").val();
+				console.log("id1",id);
+				var url_1 = baseURL+"/EmploymentJobhunter/findAllWithJobhAndEmpl";
+				$.get(url_1,function(response){
+					response.data.forEach(function(item){
+						console.log(item);
+						if(item.id==id){
+							// console.log("id2",id);
+							var realname = item.jobhunter.realname;
+							var gender = item.jobhunter.gender;
+							// console.log("gender",gender);
+							var birth = dateParse(item.jobhunter.birth);
+							// console.log("birth",birth);
+							var education = item.jobhunter.education;
+							// console.log("education",education);
+							var workTime = item.jobhunter.workTime;
+							// console.log("workTime",workTime);
+							$("#realname").text(realname);
+							$("#education").text(education);
+							$("#gender").text(gender);
+							$("#workTime").text(workTime);
+							$("#birth").text(dateParse(birth));
+						}
+					})
+				})
+				break;
+			}
+		}) 
+	})   	
+</script>   

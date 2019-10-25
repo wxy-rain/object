@@ -1,0 +1,87 @@
+<style>
+	#one{
+		width: 15%;
+		margin-bottom: 1rem;
+	}
+</style>
+<div class="main">
+	<div class="layui-tab">
+	    <ul class="layui-tab-title">
+		    <li class="layui-this">角色列表</li>
+		</ul>
+		<div class="zhong">
+    		<select name="jobtype" id="one" class="form-control">
+				<option value="">状态</option>
+			</select>
+    	</div>
+    	<table class="table text-center table-bordered table-sm">
+    		<thead class="thead-dark">
+    			<tr>
+			      <th scope="col">#</th>
+			      <th scope="col">角色</th>
+			      <th scope="col">权限</th>
+			      <th scope="col">状态</th>
+			      <th scope="col">操作</th>
+			    </tr>
+    		</thead>
+    		<tbody class="user_tbl">
+    			<tr>
+    				<td><input type="checkbox" name="id"></td>
+    				<td>客服</td>
+    				<td>求职联系、商家管理  
+    					<a href="#">修改</a>
+    				</td>
+    				<td class="text-success">启用中</td>
+    				<td>
+    					<a href="javascript:void(0)">
+							<span class="fa fa-trash-o text-danger" ></span>
+						</a>
+    				</td>
+    			</tr>
+    			<tr>
+    				<td><input type="checkbox" name="id"></td>
+    				<td>管理员</td>
+    				<td>用户管理、招聘管理、商家管理</td>
+    				<td class="text-success">启用中</td>
+    				<td>
+    					<a href="javascript:void(0)">
+							<span class="fa fa-trash-o text-danger" ></span>
+						</a>
+    				</td>
+    			</tr>
+    		</tbody>
+    	</table>
+	</div>
+</div>
+<script>
+	$(function(){
+		// var baseURL = "http://47.106.244.1:7777";
+		// //查询数据
+		// function reloadData(){
+		// 	var url = baseURL+'/EmploymentJobhunter/findAll';
+		// 	$.get(url,function(res){
+		// 		$('tbody').empty();
+		// 		res.data.forEach(function(item,index){
+		// 			$(`<tr>
+		// 				<td>`+item.id+`</td>
+		// 				<td>`+item.remark+`</td>
+		// 				<td>`+item.jobhunterId+`</td>
+		// 				<td><a class="btn_deta" href="javascript:void(0)">
+		// 						<span class="btn_deta">查看</span>
+		// 					</a>
+		// 				</td>
+		// 				<td>`+dateParse(item.askTime)+`</td>
+		// 			</tr>`).appendTo('tbody');
+		// 		})
+				
+		// 	})
+		// }
+		// reloadData();
+		//给查看绑定事件
+		$('.user_tbl').on({click:function(){
+			if($(this).text() == 查看){
+				$('#cont').load('./pages/shenhe.html');
+			}
+		}},"span");
+	})    	
+</script>   

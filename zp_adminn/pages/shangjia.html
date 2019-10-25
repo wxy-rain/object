@@ -1,0 +1,422 @@
+<style>
+	.top{
+		margin-bottom: 1rem;
+	}
+	#one{
+		display: inline;
+		margin-right: 1.5rem;
+		width: 15%;
+	}
+	.modal-backdrop {
+    z-index: -1;
+	}
+	.modal{
+		margin-top:55px; 
+	}
+	#dongjie{
+		background-color: #ff6600;
+	}
+	.dongjie{
+		color: #ff6600;
+	}
+</style>
+<div class="main">
+	
+		<div class="top">
+			<select name="location" id="one" class="form-control">
+				<option value="">全部</option>
+			</select>
+		</div>
+		<table class="table table-bordered text-center table-sm">
+			<thead class="thead-dark">
+			    <tr>
+			      <th scope="col">#</th>
+			      <th scope="col">企业名称</th>
+			      <th scope="col">联系人</th>
+			      <th scope="col">联系方式</th>
+			      <th scope="col">行业</th>
+			      <th scope="col">地址</th>
+			      <th scope="col">公司规模</th>
+			      <th scope="col">详情</th>
+			      <th scope="col">操作</th>
+			    </tr>
+			</thead>
+			<tbody class="business_tbl">
+			</tbody>
+		</table>
+		<!-- 详情模态框 -->
+		<div class="modal fade" id="myModal">
+		  <div class="modal-dialog  modal-lg" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title">公司详情</h4>
+		      </div>
+		      <div class="modal-body">
+		        	<form class="form">
+					  <div class="form-group">企业名称:杰普</div>
+					  <div class="form-group">所属行业:IT</div>
+					  <div class="form-group">公司规模:???</div>
+					  <div class="form-group">所在城市:江苏省苏州市昆山市</div>
+					  <div class="form-group">联系人:</div>
+					  <div class="form-group">联系方式:</div>
+					  <div class="form-group">公司简介:</div>
+					</form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+		        <button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!-- /详情莫泰框结束 -->
+		<!-- 修改模态框 -->
+		<div class="modal fade" id="myEditModal">
+		  <div class="modal-dialog  modal-lg" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title">修改企业</h4>
+		      </div>
+		      <div class="modal-body">
+		        	  <!-- 表单 -->
+		       <form action="/register" id="bus_form">
+		        <!-- id -->
+		       		<div class="form-group row">
+		       			<label for="input-id" class="col-3 text-center"></label>
+		       			<div class="col-9">
+		       				<input type="hidden" id="input-id" name="id" class="form-control">
+		       			</div>
+		       		</div>
+				   <!-- id -->
+		            <!-- 企业名称 -->
+		       		<div class="form-group row">
+		       			<label for="input-name" class="col-3 text-center">企业名称</label>
+		       			<div class="col-9">
+		       				<input type="text" id="input-name" name="name" class="form-control" placeholder="Jane Doe">
+		       			</div>
+		       		</div>
+				    <!-- 企业名称结束 -->
+				    <!-- 联系人姓名 -->
+					<div class="form-group row">
+						<label for="input-contactName" class="col-3 text-center">联系人姓名</label>
+						<div class="col-9">
+							<input type="text" id="input-contactName" name="contactName" class="form-control" placeholder="Jane Doe">
+						</div>
+					</div>
+					<!-- 联系人姓名结束 -->
+					<!-- 电话 -->
+					<div class="form-group row">
+						<label for="input-contactPhone" class="col-3 text-center">电话</label>
+						<div class="col-9">
+							<input type="text" id="input-contactPhone" class="form-control" name="contactPhone" placeholder="Jane Doe">
+						</div>
+					</div>
+					<!-- 电话结束 -->
+					<!-- 所属行业 -->
+					<div class="form-group row">
+						<label for="input-industry" class="col-3 text-center">行业</label>
+						<div class="col-9">
+							<input type="text" id="input-industry" class="form-control" name="industry" placeholder="Jane Doe">
+						</div>
+					</div>
+					<!-- 所属行业结束 -->
+					<!-- 规模 -->
+					<div class="form-group row">
+						<label for="select-scale" class="col-3 text-center">规模</label>
+						<select  id="select-scale" name="scale" class="form-control col-8 ml-3" style="width:230px">
+						</select>
+					</div>
+					<!-- 规模结束 -->
+					<!-- 城市 -->
+					<div class="form-group row">
+						<label for="select-location" class="col-3 text-center">城市</label>
+						<select  id="select-location" name="location" class="form-control col-8 ml-3" style="width:230px">
+						</select>
+					</div>
+					<!-- 城市结束 -->
+					<!-- 简介 -->
+					<div class="form-group row">
+					    <label for="exampleInputName2" class="col-3 text-center">公司简介:</label>
+					    <textarea class="form-control col-8 ml-3" rows="2" name="description"></textarea>
+				    </div>
+				<!-- 简介结束 -->
+		       </form>
+		       <!-- 表单结束 -->
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+		        <button type="button" class="btn btn-primary" id="save" onclick="closeRecuritmentModal()">保存</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!-- /修改莫泰框结束 -->
+		<!-- 删除成功的提示框开始 -->
+		<div class="toast toast_del" style="position: absolute;top: 1em;right: 1em">
+		  <div class="toast-header">
+		    <i class="fa fa-bell text-success mr-5"></i>
+		    <strong class="mr-auto">success</strong>
+		    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+		      <span>&times;</span>
+		    </button>
+		  </div>
+		  <div class="toast-body"></div> 
+		</div>
+		<!-- 删除成功的提示框结束 -->
+	</div>
+</div>
+<script>
+	$(function(){
+		var data;
+		$.ajaxSetup({
+			traditional:true,
+		})
+		var baseURL = "http://47.106.244.1:7777";
+		// var baseURL = "http://203.195.246.58:7777";
+
+		//提示框
+		function toast(msg){
+			$('.toast .toast-body').text(msg);
+			$('.toast').toast("show");
+			$(".toast").toast({
+				autohide:true,
+				delay:2000
+			});
+		}
+		
+		//查询数据
+		function reloadData(){
+			$('tbody').empty();
+			var url = baseURL +"/Business/findAll";
+			$.get(url,function(response){
+				data = response.data;
+				loadOption();
+				response.data.forEach(function(item,index){
+					if (item.status == null) {
+						$(`
+						<tr>
+							<td><input type="checkbox" value="`+item.id+`"></td>
+							<td>`+item.name+`</td>
+							<td>`+item.contactName+`</td>
+							<td>`+item.contactPhone+`</td>
+							<td>`+item.industry+`</td>
+							<td>`+item.location+`</td>
+							<td>`+item.scale+`</td>
+							<td><a class="btn_deta" href="javascript:void(0)">
+								<span class="btn_deta">查看</span>
+							</a>
+							</td>
+							<td>
+								<button id="dongjie" type="button" class="btn btn-success">通过</button>
+								<button id="dongjie" type="button" class="btn text-white">拒绝</button>
+							</td>
+						</tr>
+						`).appendTo('tbody')
+					} else if (item.status == '审核通过') {
+						$(`
+						<tr>
+							<td><input type="checkbox" value="`+item.id+`"></td>
+							<td>`+item.name+`</td>
+							<td>`+item.contactName+`</td>
+							<td>`+item.contactPhone+`</td>
+							<td>`+item.industry+`</td>
+							<td>`+item.location+`</td>
+							<td>`+item.scale+`</td>
+							<td><a class="btn_deta" href="javascript:void(0)">
+								<span class="btn_deta">查看</span>
+							</a>
+							</td>
+							<td>
+								<a href="javascript:void(0)">
+								<span class="btn_deta text-success">已通过</span>
+								</a>
+							</td>
+						</tr>
+						`).appendTo('tbody')
+					} else {
+						$(`
+						<tr>
+							<td><input type="checkbox" value="`+item.id+`"></td>
+							<td>`+item.name+`</td>
+							<td>`+item.contactName+`</td>
+							<td>`+item.contactPhone+`</td>
+							<td>`+item.industry+`</td>
+							<td>`+item.location+`</td>
+							<td>`+item.scale+`</td>
+							<td><a class="btn_deta" href="javascript:void(0)">
+								<span class="btn_deta">查看</span>
+							</a>
+							</td>
+							<td>
+								<a href="javascript:void(0)">
+								<span class="dongjie">已拒绝</span>
+							</a>
+							</td>
+						</tr>
+						`).appendTo('tbody')
+					}
+				});
+			});
+		}
+		reloadData();
+		//加载页面option
+		function loadOption(){
+			$.get(baseURL +"/Business/findAll",function(res){
+				res.data.forEach(function(item,index){
+					$('<option value='+item.location+'>'+item.location+'</option>').appendTo('#one');
+				})
+			})
+			// $.get(baseURL+'/Jobs/findAll',function(res){
+			// 	res.data.forEach(function(item,index){
+			// 	$('<option value='+item.status+'>'+item.status+'</option>').appendTo($('#select-location'))
+			// 	})
+			// })
+			// $.get(baseURL+'/Business/findAll',function(res){
+			// 	res.data.forEach(function(item,index){
+			// 	$('<option value='+item.id+'>'+item.name+'</option>').appendTo($('#select-scale'))
+			// 	})
+			// })
+		}
+		loadOption();
+
+		//给按钮绑定事件
+		$('tbody').on('click','button',function(){
+			var id = $(this).parents('tr').children('td').find('input').val();
+			
+
+				if ($('#dongjie').text() == "通过") {
+					var name = res.data.name;
+					var contactName = res.data.contactName;
+					var contactPhone = res.data.contactPhone;
+					var industry = res.data.industry;
+					var location = res.data.location;
+					var data = {
+						id:id,
+						name:name,
+						contactName:contactName,
+						contactPhone:contactPhone,
+						industry:industry,
+						location:location,
+						status:'审核通过'
+					}
+					$.post(baseURL+'/Business/saveOrUpdate',data,function(res){
+						reloadData();
+						toast('修改成功');
+					})
+					} else {
+						var name = res.data.name;
+						var contactName = res.data.contactName;
+						var contactPhone = res.data.contactPhone;
+						var industry = res.data.industry;
+						var location = res.data.location;
+						var data = {
+							id:id,
+							name:name,
+							contactName:contactName,
+							contactPhone:contactPhone,
+							industry:industry,
+							location:location,
+							status:'已拒绝'
+						}
+						$.post(baseURL+'/Business/saveOrUpdate',data,function(res){
+							reloadData();
+							toast('修改成功');
+						})
+					}
+				
+			})
+
+		//监听select
+		//根据地址查询
+		$('#one').change(function(){
+				var val = $(this).val()
+				// console.log(val)
+				var obj = {
+					location:val
+				}
+				$('tbody tr:not(:first)').empty();
+				$.get(baseURL+'/Business/findByLocation',obj,function(res){
+					data = res.data
+					// console.log(data)
+					loadOption()
+					res.data.forEach(function(item,index){
+						if (item.status == null) {
+						$(`
+						<tr>
+							<td><input type="checkbox" value="`+item.id+`"></td>
+							<td>`+item.name+`</td>
+							<td>`+item.contactName+`</td>
+							<td>`+item.contactPhone+`</td>
+							<td>`+item.industry+`</td>
+							<td>`+item.location+`</td>
+							<td>`+item.scale+`</td>
+							<td><a class="btn_deta" href="javascript:void(0)">
+								<span class="btn_deta">查看</span>
+							</a>
+							</td>
+							<td>
+								<button id="dongjie" type="button" class="btn btn-success">通过</button>
+								<button id="dongjie" type="button" class="btn text-white">拒绝</button>
+							</td>
+						</tr>
+						`).appendTo('tbody')
+					} else if (item.status == '审核通过') {
+						$(`
+						<tr>
+							<td><input type="checkbox" value="`+item.id+`"></td>
+							<td>`+item.name+`</td>
+							<td>`+item.contactName+`</td>
+							<td>`+item.contactPhone+`</td>
+							<td>`+item.industry+`</td>
+							<td>`+item.location+`</td>
+							<td>`+item.scale+`</td>
+							<td><a class="btn_deta" href="javascript:void(0)">
+								<span class="btn_deta">查看</span>
+							</a>
+							</td>
+							<td>
+								<a class="btn_deta" href="javascript:void(0)">
+								<span class="btn_deta text-success">已通过</span>
+								</a>
+							</td>
+						</tr>
+						`).appendTo('tbody')
+					} else {
+						$(`
+						<tr>
+							<td><input type="checkbox" value="`+item.id+`"></td>
+							<td>`+item.name+`</td>
+							<td>`+item.contactName+`</td>
+							<td>`+item.contactPhone+`</td>
+							<td>`+item.industry+`</td>
+							<td>`+item.location+`</td>
+							<td>`+item.scale+`</td>
+							<td><a class="btn_deta" href="javascript:void(0)">
+								<span class="btn_deta">查看</span>
+							</a>
+							</td>
+							<td>
+								<a class="btn_deta" href="javascript:void(0)">
+								<span class="dongjie">已拒绝</span>
+							</a>
+							</td>
+						</tr>
+						`).appendTo('tbody')
+					}
+				})
+			})
+		})
+
+		
+		//给.business_tbl绑定事件为a做代理
+		$(".business_tbl").on("click","a",function(e){
+			e.preventDefault();
+			switch(this.className){
+		        //为查看按钮绑定事件
+				case "btn_deta":
+				$("#myModal").modal("show");
+				break;
+			}
+		});
+	})
+</script>

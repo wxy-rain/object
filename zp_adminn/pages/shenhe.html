@@ -1,0 +1,29 @@
+<style>
+	.cont{
+		width: 100%;
+		height: 100%;
+	}
+</style>
+<div class="main">
+	<div class="layui-tab">
+		<ul class="layui-tab-title">
+		    <li class="layui-this">商家审核</li>
+		    <li>招聘审核</li>
+		</ul>
+	</div>
+	<div class="cont" id="cont">
+	</div>
+</div>
+<script>
+	$(function(){
+		$('#cont').load('./pages/shangjia.html');
+		$('.main').on({click:function(){
+				if($(this).text() == '商家审核'){
+					$('#cont').load('./pages/shangjia.html');
+				}
+				if($(this).text() == '招聘审核'){
+					$('#cont').load('./pages/zhaopin.html');
+				}
+			}},"li");
+	})
+</script>

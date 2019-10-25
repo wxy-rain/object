@@ -1,0 +1,62 @@
+第三阶段(企业及开发)
+1.开发方式
+	0)技术
+		es5
+	1) 创建项目
+	2)测试 apache
+	3)git/svn
+	4)部署
+	ftp -> linux -> /var/www/html
+
+2.企业级开发
+	0)技术
+		es6 + 企业级框架vue
+	1)项目结构
+	 	取决于脚手架(vue-cli)
+	 	$vue create zhaopin
+	 2)脚手架中存在静态服务器
+	 3)打包
+	 	$ yarn build
+	 4)项目版本控制
+	 	git/svn
+	 5)部署
+3.es6学习环境
+ 	linux   nodejs  vi
+ 	1) vi hello.js
+ 	2) node hello.js
+4.模块化机制(CommonJS)
+	1)模块定义
+		任意一个js文件或者目录都可以为一个模块
+		在模块文件中,都有一个module对象模块,表示当前模块
+		id
+		exports:模块向外暴露的接口
+		parent:父模块
+		filename:路径+文件名
+		loaded:
+		children:子模块
+		paths:引用的路径
+	2)模块引用
+	require(" ")
+		参数:
+		1)路径
+			require(" ")
+			按照指定的路径加载所需的模块
+		2)模块名称
+			require(" ")
+			按照paths中的路径依次寻找所需模块,直到找见为止
+		3)node_modules
+			用户存放模块(第三方)
+
+			npm  init: 把普通文件转换为模块化文件
+5.npm(node package manager)node包管理机制
+	生产依赖
+	产品依赖
+
+	$ nmp init
+
+	$ npm install xxx --save
+	本地安装
+	$ npm install xxx -g
+	全局安装xxx模块,默认会将xxx安装到node的安装目录
+6.cnpm npm淘宝镜像
+   安装  $ npm install -g cnpm --registry=https://registry.npm.taobao.org

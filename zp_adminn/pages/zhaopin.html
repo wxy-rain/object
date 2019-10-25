@@ -1,0 +1,431 @@
+<style>
+	.zhong,.jian{
+		margin-bottom: 1rem;
+	}
+	.fbzw{
+		width: 15%;
+		float: left;
+	}
+	.input{
+		width: 15%;
+		float: left;
+		margin-right:0.3rem;
+	}
+	#fb{
+		float: left;
+		margin-right:2rem;
+	}
+	#one,#two{
+		width: 15%;
+		float: left;
+		margin-right:30rem;
+	}
+	.chaxun{
+		margin-right:0.3rem;
+
+	}
+	.modal-backdrop {
+	    z-index: -1;
+	}
+	.modal{
+		margin-top:55px; 
+	}
+	#dongjie{
+		background-color: #ff6600;
+	}
+	.dongjie{
+		color: #ff6600;
+	}
+</style>
+<div class="main">
+	
+    	<div class="zhong">
+    		<select name="jobtype" id="one" class="form-control">
+				<option value="">职位类型</option>
+			</select>
+			<input id="aaa" class="input form-control" type="text" name="key" placeholder="请输入关键字">
+			<button id="btn_emp" type="button" class="btn btn-primary chaxun">查询</button>
+    	</div>
+    	<table class="table table-bordered text-center table-sm">
+    		<thead class="thead-dark">
+    			<tr>
+			      <th scope="col">#</th>
+			      <th scope="col">招聘标题</th>
+			      <th scope="col">发布人</th>
+			      <th scope="col">联系方式</th>
+			      <th scope="col">职位</th>
+			      <th scope="col">发布时间</th>
+			      <th scope="col">详情</th>
+			      <th scope="col">操作</th>
+			    </tr>
+    		</thead>
+    		<tbody id="fir" class="emp_tbl">
+    		</tbody>
+    	</table>
+			
+	    <!-- 详情模态框 -->
+		<div class="modal fade" id="myModal">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title text-center">信息</h4>
+		      </div>
+		      <div class="modal-body">
+		        	<form class="form form-control">
+					  <div class="form-group">
+					    <label for="exampleInputName2">公司名称:</label>
+					    <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleInputName2">所属行业:</label>
+					    <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleInputName2">公司规模:</label>
+					    <select class="form-control" style="width:230px">
+						 
+						</select>
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleInputName2">所在城市:</label>
+					    <select class="form-control" style="width:230px">
+						  
+						</select>
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleInputName2">联系人:</label>
+					    <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleInputName2">联系方式:</label>
+					    <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
+					  </div>
+					  <div class="form-group">
+					    <label for="exampleInputName2">公司简介:</label>
+					    <textarea class="form-control" rows="3"></textarea>
+					  </div>
+					</form>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" onclick="closeRecuritmentModal()">取消</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!-- /详情莫泰框结束 -->
+	    <!-- 删除成功的提示框开始 -->
+		<div class="toast toast_del" style="position: absolute;top: 1em;right: 1em">
+		  <div class="toast-header">
+		    <i class="fa fa-bell text-success mr-5"></i>
+		    <strong class="mr-auto">success</strong>
+		    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+		      <span>&times;</span>
+		    </button>
+		  </div>
+		  <div class="toast-body"></div> 
+		</div>
+		<!-- 删除成功的提示框结束 -->
+	</div>
+</div>
+<script>
+	//关闭模态框
+		function closeRecuritmentModal(){
+			$("#myModal").modal("hide");
+		}
+	$(function(){
+		var baseURL = "http://203.195.246.58:7777";
+		// var baseURL = "http://47.106.244.1:7777";
+		//日期转换
+		var dateParse=(dataString)=>{
+		  if(dataString){
+		    let date = new Date(dataString);
+		    let Y = date.getFullYear() + '-';
+		    let M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+		    let D = (date.getDate()< 10 ? '0'+date.getDate() : date.getDate())+' ';
+		    let h = (date.getHours()< 10 ? '0'+date.getHours() : date.getHours())+ ':';
+		    let m = (date.getMinutes()< 10 ? '0'+date.getMinutes() : date.getMinutes())+ ':';
+		    let s = (date.getSeconds()< 10 ? '0'+date.getSeconds() : date.getSeconds());
+		    return Y+M+D+h+m+s;
+		  }else{
+		    return '';
+		  }
+		}
+		
+		//提示框
+		function toast(msg){
+			$(".toast .toast-body").text(msg);
+			$(".toast").toast("show");
+			$(".toast").toast({
+				autohide:true,
+				delay:2000
+			});
+		}
+		function reloadData(){
+			$('tbody').empty();
+			var url = baseURL+"/Employment/findAll";
+			$.get(url,function(res){
+				res.data.forEach(function(item,index){
+					if (item.status == null) {
+						$(`<tr>
+			    				<td><input type="checkbox" value=`+item.id+`></td>
+			    				<td>`+item.title+`</td>
+			    				<td>`+item.contactName+`</td>
+			    				<td>`+item.contactPhone+`</td>
+			    				<td>`+item.job+`</td>
+			    				<td>`+dateParse(item.publishTime)+`</td>
+			    				<td><a class="btn_deta" href="javascript:void(0)">
+										<span class="btn_deta">查看</span>
+									</a>
+								</td>
+								<td>
+									<button id="dong" type="button" class="btn btn-success">通过</button>
+									<button id="dongjie" type="button" class="btn text-white">拒绝</button>
+								</td>
+			    			</tr>`).appendTo("#fir");
+					} else if (item.status == "招聘中") {
+						$(`<tr>
+			    				<td><input type="checkbox" value=`+item.id+`></td>
+			    				<td>`+item.title+`</td>
+			    				<td>`+item.contactName+`</td>
+			    				<td>`+item.contactPhone+`</td>
+			    				<td>`+item.job+`</td>
+			    				<td>`+dateParse(item.publishTime)+`</td>
+			    				<td><a class="btn_deta" href="javascript:void(0)">
+										<span class="btn_deta">查看</span>
+									</a>
+								</td>
+								<td>
+									<a href="javascript:void(0)">
+									<span class="btn_deta text-success">已通过</span>
+									</a>
+								</td>
+			    			</tr>`).appendTo("#fir");
+					} else {
+						$(`<tr>
+			    				<td><input type="checkbox" value=`+item.id+`></td>
+			    				<td>`+item.title+`</td>
+			    				<td>`+item.contactName+`</td>
+			    				<td>`+item.contactPhone+`</td>
+			    				<td>`+item.job+`</td>
+			    				<td>`+dateParse(item.publishTime)+`</td>
+			    				<td><a class="btn_deta" href="javascript:void(0)">
+										<span class="btn_deta">查看</span>
+									</a>
+								</td>
+								<td>
+									<a href="javascript:void(0)">
+									<span class="dongjie">已拒绝</span>
+									</a>
+								</td>
+			    			</tr>`).appendTo("#fir");
+					}
+				})
+			})
+		}
+		reloadData();
+		function loadOption(){
+			$.get(baseURL+'/Employment/findAll',function(res){
+				res.data.forEach(function(item,index){
+					$('<option value='+item.job+'>'+item.job+'</option>').appendTo($('#one'));
+				})
+			})	
+		}
+		loadOption();
+		//监听select
+		//根据job查询
+		$('#one').change(function(){
+				var val = $(this).val()
+				// console.log(val)
+				var obj = {
+					job:val
+				}
+				$('tbody tr:not(:first)').empty();
+				$.get(baseURL+'/Employment/findByJob',obj,function(res){
+					data = res.data
+					// console.log(data)
+					loadOption()
+					res.data.forEach(function(item,index){
+						if (item.status == null) {
+						$(`<tr>
+			    				<td><input type="checkbox" value=`+item.id+`></td>
+			    				<td>`+item.title+`</td>
+			    				<td>`+item.contactName+`</td>
+			    				<td>`+item.contactPhone+`</td>
+			    				<td>`+item.job+`</td>
+			    				<td>`+dateParse(item.publishTime)+`</td>
+			    				<td><a class="btn_deta" href="javascript:void(0)">
+										<span class="btn_deta">查看</span>
+									</a>
+								</td>
+								<td>
+									<button id="dong" type="button" class="btn btn-success">通过</button>
+									<button id="dongjie" type="button" class="btn text-white">拒绝</button>
+								</td>
+			    			</tr>`).appendTo("#fir");
+					} else if (item.status == "招聘中") {
+						$(`<tr>
+			    				<td><input type="checkbox" value=`+item.id+`></td>
+			    				<td>`+item.title+`</td>
+			    				<td>`+item.contactName+`</td>
+			    				<td>`+item.contactPhone+`</td>
+			    				<td>`+item.job+`</td>
+			    				<td>`+dateParse(item.publishTime)+`</td>
+			    				<td><a class="btn_deta" href="javascript:void(0)">
+										<span class="btn_deta">查看</span>
+									</a>
+								</td>
+								<td>
+									<a class="btn_deta" href="javascript:void(0)">
+									<span class="btn_deta text-success">已通过</span>
+									</a>
+								</td>
+			    			</tr>`).appendTo("#fir");
+					} else {
+						$(`<tr>
+			    				<td><input type="checkbox" value=`+item.id+`></td>
+			    				<td>`+item.title+`</td>
+			    				<td>`+item.contactName+`</td>
+			    				<td>`+item.contactPhone+`</td>
+			    				<td>`+item.job+`</td>
+			    				<td>`+dateParse(item.publishTime)+`</td>
+			    				<td><a class="btn_deta" href="javascript:void(0)">
+										<span class="btn_deta">查看</span>
+									</a>
+								</td>
+								<td>
+									<a class="btn_deta" href="javascript:void(0)">
+									<span class="dongjie">已拒绝</span>
+									</a>
+								</td>
+			    			</tr>`).appendTo("#fir");
+					}
+				})
+			})
+		})
+
+		//按用名查询
+		$('#btn_emp').on('click',function(event){
+			var title = $('#aaa').val();
+			var obj = {
+				title:title
+			}
+			$.get(baseURL+'/Employment/findByTitle',obj,function(res){
+				$('tbody').empty();
+				res.data.forEach(function(item,index){
+					if (item.status == null) {
+						$(`<tr>
+				    				<td><input type="checkbox" value=`+item.id+`></td>
+				    				<td>`+item.title+`</td>
+				    				<td>`+item.contactName+`</td>
+				    				<td>`+item.contactPhone+`</td>
+				    				<td>`+item.job+`</td>
+				    				<td>`+dateParse(item.publishTime)+`</td>
+				    				<td><a class="btn_deta" href="javascript:void(0)">
+											<span class="btn_deta">查看</span>
+										</a>
+									</td>
+									<td>
+										<button id="dong" type="button" class="btn btn-success">通过</button>
+										<button id="dongjie" type="button" class="btn text-white">拒绝</button>
+									</td>
+				    			</tr>`).appendTo("#fir");
+						} else if (item.status == "招聘中") {
+							$(`<tr>
+				    				<td><input type="checkbox" value=`+item.id+`></td>
+				    				<td>`+item.title+`</td>
+				    				<td>`+item.contactName+`</td>
+				    				<td>`+item.contactPhone+`</td>
+				    				<td>`+item.job+`</td>
+				    				<td>`+dateParse(item.publishTime)+`</td>
+				    				<td><a class="btn_deta" href="javascript:void(0)">
+											<span class="btn_deta">查看</span>
+										</a>
+									</td>
+									<td>
+										<a class="btn_deta" href="javascript:void(0)">
+										<span class="btn_deta text-success">已通过</span>
+										</a>
+									</td>
+				    			</tr>`).appendTo("#fir");
+						} else {
+							$(`<tr>
+			    				<td><input type="checkbox" value=`+item.id+`></td>
+			    				<td>`+item.title+`</td>
+			    				<td>`+item.contactName+`</td>
+			    				<td>`+item.contactPhone+`</td>
+			    				<td>`+item.job+`</td>
+			    				<td>`+dateParse(item.publishTime)+`</td>
+			    				<td><a class="btn_deta" href="javascript:void(0)">
+										<span class="btn_deta">查看</span>
+									</a>
+								</td>
+								<td>
+									<a class="btn_deta" href="javascript:void(0)">
+									<span class="dongjie">已拒绝</span>
+									</a>
+								</td>
+			    			</tr>`).appendTo("#fir");
+					}
+				})
+			})
+		})
+
+		//给按钮绑定事件
+		$('tbody').on('click','button',function(){
+			var id = $(this).parents('tr').children('td').find('input').val();
+				var data = {
+					id:id
+				}
+				$.get(baseURL+'/Employment/findById',data,function(res){
+					if ($('dongjie').text() == "招聘中") {
+						var title = res.data.title;
+						var contactName = res.data.contactName;
+						var contactPhone = res.data.contactPhone;
+						// var publishTime = res.data.publishTime;
+						
+						var data = {
+							id:id,
+							title: title,
+							contactName: contactName,
+							contactPhone: contactPhone,
+							// publishTime: publishTime,
+							status:'已通过'
+						}
+						$.post(baseURL+'/Employment/saveOrUpdate',data,function(res){
+							reloadData();
+							toast('修改成功');
+						})
+						} else {
+							var title = res.data.title;
+							var contactName = res.data.contactName;
+							// var publishTime = res.data.publishTime;
+							var contactPhone = res.data.contactPhone;
+							var data = {
+								id:id,
+								title: title,
+								contactName: contactName,
+								contactPhone: contactPhone,
+								// publishTime: publishTime,
+								status:'已拒绝'
+							}
+							$.post(baseURL+'/Employment/saveOrUpdate',data,function(res){
+								reloadData();
+								toast('修改成功');
+							})
+						}
+				})
+		})
+
+		//给.emp_tbl绑定事件为a做代理
+		$(".emp_tbl").on("click","a",function(e){
+			e.preventDefault();
+			switch(this.className){
+		        //为查看按钮绑定事件
+				case "btn_deta":
+					$("#myModal").modal("show");
+					break;
+				}
+			});
+	})
+</script>
+

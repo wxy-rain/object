@@ -1,0 +1,498 @@
+﻿<style>
+	.top{
+		margin-bottom: 1rem;
+	}
+	#one,#two,#three{
+		display: inline;
+		margin-right: 1.5rem;
+		width: 15%;
+	}
+	#four{
+		display: inline;
+		margin-right:0rem;
+		width: 15%;
+	}
+	
+	.modal-backdrop {
+    z-index: -1;
+	}
+	.modal{
+		margin-top:55px; 
+	}
+</style>
+<div class="main">
+	<div class="layui-tab">
+	    <ul class="layui-tab-title">
+		    <li class="layui-this">商家列表</li>
+		</ul>
+		<div class="layui-tab-content">
+		    <div class="layui-tab-item layui-show">
+				<div class="top">
+					<button id="btn_business" type="button" class="btn btn-danger">批量删除</button>
+					<select name="location" id="one" class="form-control">
+						<option value="">所在地</option>
+					</select>
+					<select name="industry" id="two" class="form-control">
+						<option value="">行业类型</option>
+					</select>
+					<select name="scale" id="three" class="form-control">
+						<option value="">公司规模</option>
+					</select>
+					<select name="id" id="four" class="form-control">
+						<option value="">id</option>
+					</select>
+				</div>
+				<table class="table table-bordered text-center table-sm">
+					<thead class="thead-dark">
+					    <tr>
+					      <th scope="col">#</th>
+					      <th scope="col">企业名称</th>
+					      <th scope="col">联系人</th>
+					      <th scope="col">联系方式</th>
+					      <th scope="col">行业类型</th>
+					      <th scope="col">地址</th>
+					      <th scope="col">公司规模</th>
+					      <th scope="col">详情</th>
+					      <th scope="col">操作</th>
+					    </tr>
+					</thead>
+					<tbody class="business_tbl">
+					</tbody>
+				</table>
+		</div>
+		<!-- 详情模态框 -->
+		<div class="modal fade" id="myModal">
+  			<div class="modal-dialog modal-lg" role="document">
+    			<div class="modal-content">
+      				<!-- <div class="modal-header"> -->
+        				<h4 class="modal-title" id="exampleModalLabel">北京十方缘生物科技有限公司</h4>
+
+        				<button type="button" class="close" onclick="closeRecuritmentModal()">
+           					<span>&times;</span>
+        				</button><br>
+        			    <div class="text-gray">互联网/电子商务</div>
+        				<div class="text-gray">500-999人</div>
+      				<!-- </div> -->
+      				<div class="modal-body">
+  						<div style="border-top: 1px #ededed solid;color: #999;">
+  							<div>行业类型： 
+								<span style="color: #333;">商务服务业</span>
+  							</div>
+  							<div>成立时间： 
+								<span style="color: #333;">2017年09月28日</span>
+  							</div>
+  							<div>注册资本： 
+  								<span style="color: #333;">500万人民币</span>
+  							</div>
+  						</div>
+  						<div style="border-top: 1px #ededed solid;color: #999;">
+  							<div class="text-wrap">北京十方缘生物科技有限公司始建于2003年1月13日，是一家集生物产品等委托生产、推广于一体的现代化股份制集团公司。公司以客户需求为经营导向，以人类大众健康为己任，提倡健康的生活方式。</div>
+  						</div>
+  						<div style="border-top: 1px #ededed solid;">
+  							<img src="./images/0.jpg" alt="-_-">
+  						</div>
+
+      
+		      		</div>
+	      		</div>	
+		  	</div>
+		</div>
+		<!-- /详情莫泰框结束 -->
+		<!-- 修改模态框 -->
+		<div class="modal fade" id="myEditModal">
+		  <div class="modal-dialog  modal-lg" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h4 class="modal-title">修改企业</h4>
+		      </div>
+		      <div class="modal-body">
+		        	  <!-- 表单 -->
+		       <form action="/register" id="bus_form">
+		        <!-- id -->
+		       		<div class="form-group row">
+		       			<label for="input-id" class="col-3 text-center"></label>
+		       			<div class="col-9">
+		       				<input type="hidden" id="input-id" name="id" class="form-control">
+		       			</div>
+		       		</div>
+				   <!-- id -->
+		            <!-- 企业名称 -->
+		       		<div class="form-group row">
+		       			<label for="input-name" class="col-3 text-center">企业名称</label>
+		       			<div class="col-9">
+		       				<input type="text" id="input-name" name="name" class="form-control" placeholder="Jane Doe">
+		       			</div>
+		       		</div>
+				    <!-- 企业名称结束 -->
+				    <!-- 联系人姓名 -->
+					<div class="form-group row">
+						<label for="input-contactName" class="col-3 text-center">联系人姓名</label>
+						<div class="col-9">
+							<input type="text" id="input-contactName" name="contactName" class="form-control" placeholder="Jane Doe">
+						</div>
+					</div>
+					<!-- 联系人姓名结束 -->
+					<!-- 电话 -->
+					<div class="form-group row">
+						<label for="input-contactPhone" class="col-3 text-center">电话</label>
+						<div class="col-9">
+							<input type="text" id="input-contactPhone" class="form-control" name="contactPhone" placeholder="Jane Doe">
+						</div>
+					</div>
+					<!-- 电话结束 -->
+					<!-- 所属行业 -->
+					<div class="form-group row">
+						<label for="input-industry" class="col-3 text-center">行业</label>
+						<div class="col-9">
+							<input type="text" id="input-industry" class="form-control" name="industry" placeholder="Jane Doe">
+						</div>
+					</div>
+					<!-- 所属行业结束 -->
+					<!-- 规模 -->
+					<div class="form-group row">
+						<label for="select-scale" class="col-3 text-center">规模</label>
+						<select  id="select-scale" name="scale" class="form-control col-8 ml-3" style="width:230px">
+						</select>
+					</div>
+					<!-- 规模结束 -->
+					<!-- 城市 -->
+					<div class="form-group row">
+						<label for="select-location" class="col-3 text-center">城市</label>
+						<select  id="select-location" name="location" class="form-control col-8 ml-3" style="width:230px">
+						</select>
+					</div>
+					<!-- 城市结束 -->
+					<!-- 简介 -->
+					<div class="form-group row">
+					    <label for="exampleInputName2" class="col-3 text-center">公司简介:</label>
+					    <textarea class="form-control col-8 ml-3" rows="2" name="description"></textarea>
+				    </div>
+				<!-- 简介结束 -->
+		       </form>
+		       <!-- 表单结束 -->
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+		        <button type="button" class="btn btn-primary" id="save" onclick="closeRecuritmentModal()">保存</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!-- /修改莫泰框结束 -->
+		<!-- 删除成功的提示框开始 -->
+		<div class="toast toast_del" style="position: absolute;top: 1em;right: 1em">
+		  <div class="toast-header">
+		    <i class="fa fa-bell text-success mr-5"></i>
+		    <strong class="mr-auto">success</strong>
+		    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">
+		      <span>&times;</span>
+		    </button>
+		  </div>
+		  <div class="toast-body"></div> 
+		</div>
+		<!-- 删除成功的提示框结束 -->
+	</div>
+</div>
+<script>
+	//关闭模态框
+		function closeRecuritmentModal(){
+			$("#myEditModal").modal("hide");
+			$("#myModal").modal("hide");
+		}
+	$(function(){
+		var data;
+		$.ajaxSetup({
+			traditional:true,
+		})
+		var baseURL = "http://203.195.246.58:7777";
+		// var baseURL = "http://47.106.244.1:7777";
+		//提示框
+		function toast(msg){
+			$('.toast .toast-body').text(msg);
+			$('.toast').toast("show");
+			$(".toast").toast({
+				autohide:true,
+				delay:2000
+			});
+		}
+		
+		//查询数据
+		function reloadData(){
+			$('tbody').empty();
+			var url = baseURL +"/Business/findAll";
+			$.get(url,function(response){
+				data = response.data;
+				loadOption();
+				response.data.forEach(function(item,index){
+					$(`
+						<tr>
+							<td><input type="checkbox" value="`+item.id+`"></td>
+							<td>`+item.name+`</td>
+							<td>`+item.contactName+`</td>
+							<td>`+item.contactPhone+`</td>
+							<td>`+item.industry+`</td>
+							<td>`+item.location+`</td>
+							<td>`+item.scale+`</td>
+							<td><a class="btn_deta" href="javascript:void(0)">
+								<span class="btn_deta">查看</span>
+							</a>
+							</td>
+							<td>
+								<a class="btn_del" href="javascript:void(0)">
+								<span class="btn_del fa fa-trash-o text-danger" ></span>
+								</a>
+								<a class="btn_upd" href="javascript:void(0)">
+								<span class="btn_upd fa fa-pencil-square-o" ></span>
+								</a>
+							</td>
+						</tr>
+						`).appendTo('tbody')
+				});
+			});
+		}
+		reloadData();
+		//加载页面option
+		function loadOption(){
+			$.get(baseURL +"/Business/findAll",function(res){
+				res.data.forEach(function(item,index){
+					$('<option value='+item.location+'>'+item.location+'</option>').appendTo('#one');
+					$('<option value='+item.industry+'>'+item.industry+'</option>').appendTo('#two');
+					$('<option value='+item.scale+'>'+item.scale+'</option>').appendTo('#three');
+					$('<option value='+item.id+'>'+item.id+'</option>').appendTo('#four');
+				})
+			})
+			$.get(baseURL+'/Jobs/findAll',function(res){
+				res.data.forEach(function(item,index){
+				$('<option value='+item.status+'>'+item.status+'</option>').appendTo($('#select-location'))
+				})
+			})
+			$.get(baseURL+'/Business/findAll',function(res){
+				res.data.forEach(function(item,index){
+				$('<option value='+item.id+'>'+item.name+'</option>').appendTo($('#select-scale'))
+				})
+			})
+		}
+		loadOption();
+		//监听select
+		//根据地址查询
+		$('#one').change(function(){
+				var val = $(this).val()
+				// console.log(val)
+				var obj = {
+					location:val
+				}
+				$('tbody tr:not(:first)').empty();
+				$.get(baseURL+'/Business/findByLocation',obj,function(res){
+					data = res.data
+					// console.log(data)
+					loadOption()
+					res.data.forEach(function(item,index){
+						$(`
+							<tr>
+								<td><input type="checkbox" value="`+item.id+`"></td>
+								<td>`+item.name+`</td>
+								<td>`+item.contactName+`</td>
+								<td>`+item.contactPhone+`</td>
+								<td>`+item.industry+`</td>
+								<td>`+item.location+`</td>
+								<td>`+item.scale+`</td>
+								<td><a class="btn_details" href="javascript:void(0)">查看</a></td>
+								<td>
+									<a class="btn_del" href="javascript:void(0)">
+									<span class="btn_del fa fa-trash-o text-danger" ></span>
+									</a>
+									<a class="btn_upd" href="javascript:void(0)">
+									<span class="btn_upd fa fa-pencil-square-o" ></span>
+									</a>
+								</td>
+							</tr>
+							`).appendTo('tbody')
+					})
+				})
+		})
+		//根据行业查询
+		$('#two').change(function(){
+			var val = $(this).val()
+			// console.log(val)
+			var obj = {
+				industry:val
+			}
+			$('tbody tr:not(:first)').empty();
+			$.get(baseURL+'/Business/findByIndustry',obj,function(res){
+					data = res.data
+					// console.log(data)
+					loadOption()
+					res.data.forEach(function(item,index){
+						$(`
+							<tr>
+								<td><input type="checkbox" value="`+item.id+`"></td>
+								<td>`+item.name+`</td>
+								<td>`+item.contactName+`</td>
+								<td>`+item.contactPhone+`</td>
+								<td>`+item.industry+`</td>
+								<td>`+item.location+`</td>
+								<td>`+item.scale+`</td>
+								<td><a class="btn_details" href="javascript:void(0)">查看</a></td>
+								<td>
+									<a class="btn_del" href="javascript:void(0)">
+									<span class="btn_del fa fa-trash-o text-danger" ></span>
+									</a>
+									<a class="btn_upd" href="javascript:void(0)">
+									<span class="btn_upd fa fa-pencil-square-o" ></span>
+									</a>
+								</td>
+							</tr>
+							`).appendTo('tbody')
+					})
+				})
+		})
+		//根据规模查询
+		$('#three').change(function(){
+			var val = $(this).val()
+			// console.log(val)
+			var obj = {
+				scale:val
+			}
+			$('tbody tr:not(:first)').empty();
+			$.get(baseURL+'/Business/findByScale',obj,function(res){
+					data = res.data
+					// console.log(data)
+					loadOption()
+					res.data.forEach(function(item,index){
+						$(`
+							<tr>
+								<td><input type="checkbox" value="`+item.id+`"></td>
+								<td>`+item.name+`</td>
+								<td>`+item.contactName+`</td>
+								<td>`+item.contactPhone+`</td>
+								<td>`+item.industry+`</td>
+								<td>`+item.location+`</td>
+								<td>`+item.scale+`</td>
+								<td><a class="btn_details" href="javascript:void(0)">查看</a></td>
+								<td>
+									<a class="btn_del" href="javascript:void(0)">
+									<span class="btn_del fa fa-trash-o text-danger" ></span>
+									</a>
+									<a class="btn_upd" href="javascript:void(0)">
+									<span class="btn_upd fa fa-pencil-square-o" ></span>
+									</a>
+								</td>
+							</tr>
+							`).appendTo('tbody')
+					})
+			})
+		})
+		//根据id查询
+		$('#four').change(function(){
+			var val = $(this).val()
+			// console.log(val)
+			var obj = {
+				id:val
+			}
+			$('tbody tr:not(:first)').empty();
+			$.get(baseURL+'/Business/findById',obj,function(res){
+					data = res.data
+					// console.log(data)
+					loadOption()
+					res.data.forEach(function(item,index){
+						$(`
+							<tr>
+								<td><input type="checkbox" value="`+item.id+`"></td>
+								<td>`+item.name+`</td>
+								<td>`+item.contactName+`</td>
+								<td>`+item.contactPhone+`</td>
+								<td>`+item.industry+`</td>
+								<td>`+item.location+`</td>
+								<td>`+item.scale+`</td>
+								<td><a class="btn_details" href="javascript:void(0)">查看</a></td>
+								<td>
+									<a class="btn_del" href="javascript:void(0)">
+									<span class="btn_del fa fa-trash-o text-danger" ></span>
+									</a>
+									<a class="btn_upd" href="javascript:void(0)">
+									<span class="btn_upd fa fa-pencil-square-o" ></span>
+									</a>
+								</td>
+							</tr>
+							`).appendTo('tbody')
+					})
+				})
+		})
+		
+		
+		//给.business_tbl绑定事件为a做代理
+		$(".business_tbl").on("click","a",function(e){
+			e.preventDefault();
+			switch(this.className){
+		        //为删除按钮绑定事件
+				case "btn_del":
+				//	获取数据
+				var id = $(this).parents("tr").children().eq(0).find("input").val();
+				//和后台交互
+				var url = baseURL+"/Business/deleteById";
+				var data = "id="+id;
+				$.post(url,data,function(response,status){
+					// alert("删除成功");
+					toast("删除成功");
+					reloadData();
+				});
+				break;
+		        //为查看按钮绑定事件
+				case "btn_deta":
+				$("#myModal").modal("show");
+				break;
+				// 修改模态框弹出
+				case "btn_upd":
+				$("#myEditModal").modal("show");
+				//获取数据
+				var id=$(this).parents("tr").children().find("input").val();
+				var name=$(this).parents("tr").children("td")[1].innerText;
+				var contactName=$(this).parents("tr").children("td")[2].innerText;
+				var contactPhone=$(this).parents("tr").children("td")[3].innerText;
+				var industry=$(this).parents("tr").children("td")[4].innerText;
+				var location=$(this).parents("tr").children("td")[5].innerText;
+				var scale=$(this).parents("tr").children("td")[6].innerText;
+				//设置值
+				$("#bus_form input[name=id]").val(id);
+				$("#bus_form input[name=name]").val(name);
+				$("#bus_form input[name=contactName]").val(contactName);
+				$("#bus_form input[name=contactPhone]").val(contactPhone);
+				$("#bus_form input[name=industry]").val(industry);
+				$("#bus_form select[name=location]").val(location);
+				$("#bus_form select[name=scale]").val(scale);
+				//将数据加载到页面上
+				//获取数据
+				$('#save').on('click',function(){
+					var id=$('input[name=id]').val();
+					var name = $('input[name=name]').val();
+					var contactName = $('input[name=contactName]').val();
+					var contactPhone = $('input[name=contactPhone]').val();
+					var industry = $('input[name=industry]').val();
+					var location = $('#select-location').val();
+					var scale = $('#select-scale').val();
+					//调用接口
+					var obj = {
+							id:id,
+							name:name,
+							contactName:contactName,
+							contactPhone:contactPhone,
+							industry:industry,
+							location:location,
+							scale:scale,
+							establishedTime:"establishedTime",
+							registeredCapital:"registeredCapital",
+							description:"description",
+							businessLicense:"businessLicense",
+							status:"status"
+					}
+					// console.log(obj)
+					$.post(baseURL+'/Business/saveOrUpdate',obj,function(res){
+							reloadData();
+							toast('保存成功');
+					})
+				})
+				break;
+			}
+		});
+	})
+</script>

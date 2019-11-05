@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>呼吸灯</title>
+	<style>
+		div {
+			box-sizing: border-box;
+		}
+		.content {
+			width: 400px;
+			height: 600px;
+			background-color: #333;
+			margin: 0 auto;
+		}
+		.content > .box {
+			height: 400px;
+			padding: 40px;	
+			/*当正方形的padding增大，外圆变小*/
+			animation-name: outer;
+			animation-duration: 5s;
+			animation-timing-function: linear;
+			animation-iteration-count: infinite;
+		}
+		.content > .box > .outer {
+			height: 100%;
+			border: 5px solid #ccc;
+			border-radius: 50%;
+			padding: 20px;
+			/*当外圆的padding增大，内圆变小*/
+			animation-name: inner;
+			animation-duration: 5s;
+			animation-timing-function: linear;
+			animation-iteration-count: infinite;
+		}
+		.content > .box > .outer >.inner {
+			height: 100%;
+			border: 10px solid #ffffff;
+			border-radius: 50%;
+		}
+
+		@keyframes outer {
+			25%{
+				padding: 30px;
+			}
+			50%{
+				padding: 40px;
+			}
+		}
+
+		@keyframes inner {
+			25%{
+				padding: 30px;
+			}
+			50%{
+				padding: 20px;
+			}
+			75%{
+				padding: 32px;
+			}
+			100%{
+				padding: 20px;
+			}
+		}
+
+	</style>
+</head>
+<body>
+	<div class="content">
+		<!-- 正方形 -->
+		<div class="box">
+			<!-- 外圆 -->
+			<div class="outer">
+				<!-- 内圆 -->
+				<div class="inner">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
